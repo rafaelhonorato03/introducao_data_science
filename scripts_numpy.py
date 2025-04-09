@@ -1,4 +1,4 @@
-import scripts_numpy as np
+import numpy as np
 
 # Gerando dados aleatórios
 
