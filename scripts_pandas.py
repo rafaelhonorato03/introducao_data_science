@@ -58,5 +58,10 @@ print(df2['estados'])
 df2['estimativa'] = 50
 print(df2)
 
-df2['estimativa'] = np.arrange(1, 27)
+df2 = df2[df2['estados'] != 'Acre']
+print(df2)
+print(df2.count())
+print(df2.describe(include='all'))
+
+df2['anos'] = 2025
 print(df2)
