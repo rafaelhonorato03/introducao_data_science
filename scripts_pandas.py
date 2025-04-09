@@ -65,3 +65,5 @@ print(df2.describe(include='all'))
 
 df2['anos'] = 2025
 print(df2)
+
+print(df2.iloc[1:5])
