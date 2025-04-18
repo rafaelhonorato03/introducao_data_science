@@ -36,6 +36,10 @@ with open('TSLA.csv', 'r') as f:
         fechamento = coluna[4]
         print('Data: ', data, 'Abertura: ', abertura, 'Altura Maxima: ', altura_max, 'Fechamento: ', fechamento)
 
+arquivo_tesla = 'TSLA.csv'
+dados_tesla = pd.read_csv(arquivo_tesla, skiprows=1, names=['Date', 'Open', 'High', 'Low'], nrows=5)
+print(dados_tesla.head(10))
+
 # Utilizando APIs
 arquivo = 'https://raw.githubusercontent.com/plotly/datasets/refs/heads/master/2010_alcohol_consumption_by_country.csv'
 
@@ -59,3 +63,5 @@ plt.tight_layout()
 
 # Exibindo o gráfico
 plt.show()
+
+
