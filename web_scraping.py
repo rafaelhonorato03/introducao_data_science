@@ -1,3 +1,4 @@
+import json
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -42,3 +43,9 @@ print(pontos)
 df = pd.DataFrame({'Linguagem': linguagens, 'Pontos': pontos})
 print(df)
 df.to_csv('linguagens.csv', index=False)
+
+
+# trabalhando com JSON
+resposta = requests.get('https://randomuser.me/api')
+dados = json.loads(resposta.text)
+print(dados['results'][0]['name']['first'])
