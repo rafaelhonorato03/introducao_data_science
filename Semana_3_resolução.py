@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import requests
 import json
 import seaborn as sns
+import bokeh
+import bokeh.plotting as bk
 
 url = 'https://db-engines.com/en/ranking'
 html = requests.get(url).content
@@ -53,3 +55,18 @@ resposta=requests.get(site)
 dados=json.loads(resposta.text)
 print(dados)
 print(dados['value'][0]['cotacaoVenda'])
+
+""" Creates a block plot using Bokeh and displays it using the show() function.
+
+.. bokeh-example-metadata::
+    :apis: bokeh.plotting.figure, bokeh.plotting.show, bokeh.models.Block
+    :refs: :ref:`ug_basic_areas_rects`
+    :keywords: block, plot
+"""
+
+from bokeh.plotting import figure, show
+
+p = figure(width=400, height=400)
+p.block(x=[1, 2, 3], y=[1, 2, 3], width=[0.2, 0.5, 0.1], height=1.5)
+
+show(p)
