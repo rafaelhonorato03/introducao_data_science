@@ -33,3 +33,23 @@ dados['Pontos']=pontos
 print(dados)
 
 sns.barplot(data=dados.head(4), x='Banco', y='Pontos')
+plt.show()
+
+dados_ex4=dados.head(10)
+
+total=dados_ex4['Pontos'].sum()
+dados_ex4['Share']=dados_ex4['Pontos']/total*100
+print(dados_ex4)
+
+plt.pie(dados_ex4['Share'],labels=dados_ex4['Banco'])
+plt.show()
+
+dados.to_csv("db-ranking.csv")
+
+
+# Dados públicos JSON
+site="https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='09-16-2008'&$top=100&$format=json&$select=cotacaoCompra,cotacaoVenda,dataHoraCotacao"
+resposta=requests.get(site)
+dados=json.loads(resposta.text)
+print(dados)
+print(dados['value'][0]['cotacaoVenda'])
