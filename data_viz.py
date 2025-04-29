@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import matplotlib.patches as patches
 import seaborn as sns
 import numpy as np
 
@@ -40,4 +42,20 @@ plt.show()
 ## Usando seaborn
 sns.barplot(data=dados, x='dias', y='Contagios')
 sns.lineplot(data=dados, x='dias', y='Vacinados', color='red')
+plt.show()
+
+# Teste grafico pintado
+
+img = mpimg.imread('money.png')
+progress = 0.34  # 34%
+fig, ax = plt.subplots(figsize=(5, 5))
+
+# Mostra a imagem
+ax.imshow(img, extent=[0, 1, 0, 1])
+
+# Adiciona um retângulo branco para cobrir o que ainda não foi atingido
+ax.add_patch(patches.Rectangle((progress, 0), 1 - progress, 1, color='white', alpha=0.7))
+
+# Ajuste visual
+ax.axis('off')
 plt.show()
