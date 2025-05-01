@@ -34,6 +34,7 @@ dados_numericos = dados.select_dtypes(include=[np.number])
 # Agora sim calcula a máscara da correlação
 mask = np.triu(np.ones_like(dados_numericos.corr(), dtype=bool))
 
-plt.figure(figsize=(20, 20))
-sns.heatmap(dados.corr(), mask=mask, square=True, cmap='coolwarm', annot=True, fmt='.2f')
+plt.figure(figsize=(12, 10))
+sns.heatmap(dados_numericos.corr(), mask=mask, square=True, cmap='coolwarm', annot=False, fmt='.2f')
+plt.tight_layout()
 plt.show()
