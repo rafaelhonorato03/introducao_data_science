@@ -28,7 +28,12 @@ print(dados.info())
 #eda.show_html('eda.html') - Esta dando erro, pois a versão não é compatível com o Nunpy
 
 # Analise de correlação de Pearson
-mask = np.triu(np.ones_like(dados.corr(), dtype=bool))
+# Seleciona apenas colunas numéricas
+dados_numericos = dados.select_dtypes(include=[np.number])
+
+# Agora sim calcula a máscara da correlação
+mask = np.triu(np.ones_like(dados_numericos.corr(), dtype=bool))
+
 plt.figure(figsize=(20, 20))
-sns.heatmap(dados.corr(), mask=mask, cmap='coolwarm', annot=True, fmt='.2f')
+sns.heatmap(dados.corr(), mask=mask, square=True, cmap='coolwarm', annot=True, fmt='.2f')
 plt.show()
