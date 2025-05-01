@@ -34,7 +34,38 @@ dados_numericos = dados.select_dtypes(include=[np.number])
 # Agora sim calcula a máscara da correlação
 mask = np.triu(np.ones_like(dados_numericos.corr(), dtype=bool))
 
-plt.figure(figsize=(12, 10))
-sns.heatmap(dados_numericos.corr(), mask=mask, square=True, cmap='coolwarm', annot=False, fmt='.2f')
+plt.figure(figsize=(12, 8))
+sns.heatmap(dados_numericos.corr(),
+            mask=mask,
+            square=True,
+            cmap='coolwarm',
+            annot=False,
+            fmt='.2f')
 plt.tight_layout()
 plt.show()
+
+# Analise exploratória
+print(dados.describe(include='all'))
+print(dados.isnull())
+print(dados.isnull().sum())
+
+# Analisando uma coluna
+print(dados['winner_entry'].value_counts())
+print(dados['winner_entry'].unique())
+
+dados.dropna(subset=['loser_entry'], inplace=True)
+dados.dropna(axis=1, how= 'all')
+
+print(dados['winner_entry'].unique())
+dados['winner_entry'].fillna(value= 'x', inplace=True) #substituindo por x
+print(dados['winner_entry'].unique())
+
+dados['w_ace'].unique()
+dados['loser_ht'].unique()
+
+dados.fillna(value={'w_ace': 0,
+                    'loser_ht': dados['loser_ht'].mean()},
+                    inplace=True) #substituindo por 0 e pela média
+
+dados['w_ace'].unique()
+dados['loser_ht'].unique()
