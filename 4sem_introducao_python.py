@@ -69,3 +69,46 @@ dados.fillna(value={'w_ace': 0,
 
 dados['w_ace'].unique()
 dados['loser_ht'].unique()
+
+print(dados['minutes'][1975:1973])
+dados['minutes'] = dados['minutes'].ffill() #preenchendo os valores nulos com o valor anterior
+print(dados['minutes'][1975:1973])
+
+print(dados.duplicated())
+print(dados.duplicated().sum())
+
+dados.drop_duplicates(subset=['tourney_name'], inplace=True) #removendo duplicados
+print(dados.duplicated().sum())
+print(dados['tourney_name'].unique())
+
+# Deslocamento de dados
+
+dados2 = pd.read_csv("TSLA.csv", sep=",")
+print(dados2.head())
+print(dados2.columns)
+print(dados2.info())
+print(dados2.describe())
+
+dados2['close_yesterday'] = dados2['Close'].shift(1) #deslocando os dados para baixo
+print(dados2.head(10))
+
+dados2['delta%'] = (dados2['Close']/ dados2['close_yesterday'] - 1)*100 #calculando a variação percentual
+print(dados2.head(10))
+
+dados2.dropna(inplace=True) #removendo os valores nulos
+print(dados2.head(10))
+
+# Transformando dados categóricos em numéricos
+print(dados['winner_ioc'].unique()) #mostrando os dados únicos
+
+# Algoritmo de Machine Learning - Label Encoder
+from sklearn.preprocessing import LabelEncoder
+paises = dados['winner_ioc']
+print(paises)
+
+lencoder = LabelEncoder()
+paises_numero = lencoder.fit_transform(paises) #transformando os dados categóricos em numéricos
+print(paises_numero)
+
+dados['paises_numero'] = paises_numero #adicionando a nova coluna ao dataframe
+print(dados.head(10))
