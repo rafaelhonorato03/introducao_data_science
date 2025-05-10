@@ -14,3 +14,4 @@ sns.heatmap(correlacao, annot=True, cmap='coolwarm')
 plt.title('Correlação entre variáveis numéricas')
 plt.tight_layout()
 plt.show()
+
