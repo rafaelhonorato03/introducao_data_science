@@ -1,56 +1,119 @@
-# Introdução à Ciência de Dados
+# 📊 Introdução à Ciência de Dados
 
-Este repositório contém exemplos e práticas introdutórias de Ciência de Dados, cobrindo tópicos como manipulação de dados, visualização, web scraping e uso de bibliotecas populares como `pandas`, `numpy`, `matplotlib` e `seaborn`.
+Este repositório contém uma coleção abrangente de scripts e notebooks focados no aprendizado e prática de Ciência de Dados, desde conceitos básicos até análises mais avançadas.
 
-## Estrutura do Projeto
+## 🎯 Objetivos do Projeto
 
-O projeto está organizado em diferentes scripts que abordam tópicos específicos:
+- Aprender fundamentos de manipulação de dados com Python
+- Praticar visualização de dados com diferentes bibliotecas
+- Explorar técnicas de análise exploratória de dados
+- Implementar modelos básicos de machine learning
+- Trabalhar com dados reais do Kaggle
 
-### 1. **Manipulação de Dados com Pandas**
-Arquivo: `scripts_pandas.py`
+## 📚 Conteúdo
 
-- Introdução ao uso do `pandas` para manipulação de dados.
-- Criação e manipulação de `Series` e `DataFrames`.
-- Operações básicas como filtragem, agregação e adição de colunas.
-- Exemplo de uso com dados fictícios de estados brasileiros, anos e populações.
+### 1. Manipulação de Dados
+- **scripts_pandas.py**: Operações básicas e avançadas com Pandas
+- **scripts_numpy.py**: Manipulação numérica com NumPy
+- **scripsts_carga_dados.py**: Diferentes formas de carregar dados
 
-### 2. **Visualização de Dados**
-Arquivo: `data_viz.py`
+### 2. Visualização de Dados
+- **data_viz.py**: Exemplos com Matplotlib e Seaborn
+- Gráficos de dispersão, barras e linhas
+- Personalização de visualizações
+- Mapas de calor e correlações
 
-- Uso do `matplotlib` e `seaborn` para criar gráficos.
-- Exemplos de gráficos de dispersão, linhas, barras e combinações.
-- Estilização de gráficos e manipulação de dados para visualização.
-- Geração de dados aleatórios para simular cenários de vacinação e contágio.
+### 3. Web Scraping
+- **web_scraping.py**: Extração de dados da web
+- Uso de BeautifulSoup e Requests
+- Manipulação de HTML e JSON
 
-### 3. **Web Scraping**
-Arquivo: `web_scraping.py`
+### 4. Machine Learning
+- **sem_6_machine_learning.py**: Introdução a algoritmos de ML
+- **algoritmo_aprendizado_de_maquina.py**: Implementações práticas
+- KNN, Regressão Linear e outros algoritmos
 
-- Uso do `requests` e `BeautifulSoup` para extrair dados de páginas web.
-- Extração de parágrafos, links e tabelas de um site.
-- Criação de um `DataFrame` com os dados extraídos e exportação para CSV.
+### 5. Análise de Dados do Kaggle
+- **sem_7_predicao.py**: Análise do dataset California Housing
+- **exemplo_kaggle.py**: Como usar a API do Kaggle
+- Exemplos práticos de análise exploratória
 
-### 4. **Manipulação Numérica com NumPy**
-Arquivo: `scripts_numpy.py`
+## 🛠️ Tecnologias Utilizadas
 
-- Introdução ao uso do `numpy` para manipulação de arrays.
-- Operações matemáticas e criação de arrays com valores aleatórios.
-- Exemplos de slicing, broadcasting e operações entre arrays.
+- **Python 3.x**
+- **Pandas**: Manipulação e análise de dados
+- **NumPy**: Computação numérica
+- **Matplotlib** e **Seaborn**: Visualização de dados
+- **Scikit-learn**: Machine Learning
+- **BeautifulSoup**: Web Scraping
+- **Kaggle API**: Acesso a datasets
 
-## Tecnologias Utilizadas
+## 📦 Como Instalar
 
-- **Python**: Linguagem principal do projeto.
-- **Bibliotecas**:
-  - `pandas`: Manipulação e análise de dados.
-  - `numpy`: Operações numéricas e manipulação de arrays.
-  - `matplotlib`: Criação de gráficos.
-  - `seaborn`: Visualização de dados avançada.
-  - `requests`: Requisições HTTP para web scraping.
-  - `BeautifulSoup`: Extração de dados de HTML.
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/introducao_data_science.git
+cd introducao_data_science
+```
 
-## Como Executar
+2. Instale as dependências:
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn beautifulsoup4 kaggle
+```
 
-1. **Clone o repositório**:
-   ```bash
-   git clone https://github.com/seu-usuario/introducao_data_science.git
-   cd introducao_data_science
+3. Configure a API do Kaggle:
+   - Crie uma conta no [Kaggle](https://www.kaggle.com)
+   - Baixe o arquivo `kaggle.json` das configurações da sua conta
+   - Coloque o arquivo em `~/.kaggle/kaggle.json` (Linux/Mac) ou `C:\Users\<seu-usuario>\.kaggle\kaggle.json` (Windows)
+
+## 🚀 Como Usar
+
+Cada script pode ser executado independentemente:
+
+```bash
+python scripts_pandas.py
+python data_viz.py
+python sem_7_predicao.py
+```
+
+## 📊 Exemplos de Análises
+
+O repositório inclui diversos exemplos práticos:
+
+- Análise de preços de casas na Califórnia
+- Classificação de flores Iris
+- Análise de dados do mercado financeiro
+- Web scraping de dados de linguagens de programação
+
+## 📝 Exercícios e Práticas
+
+- **4_sem_exerc.py**: Exercícios práticos de análise de dados
+- **5_sem_exerc.py**: Práticas com visualização
+- Diversos exemplos comentados para estudo
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+
+1. Fazer fork do projeto
+2. Criar uma branch para sua feature
+3. Commitar suas mudanças
+4. Fazer push para a branch
+5. Abrir um Pull Request
+
+## 📜 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 📫 Contato
+
+- [Rafael Amorim Honorato]
+- Email: [rafael.honorato03@gmail.com]
+- LinkedIn: [https://www.linkedin.com/in/rafael-honorato03/]
+
+## 🙏 Agradecimentos
+
+- Kaggle pela disponibilização dos datasets
+- Comunidade Python e Data Science
+- Todos os contribuidores do projeto
 
