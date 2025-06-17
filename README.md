@@ -1,6 +1,84 @@
-# 📊 Introdução à Ciência de Dados
+# Introdução à Ciência de Dados
 
-Este repositório contém uma coleção abrangente de scripts e notebooks focados no aprendizado e prática de Ciência de Dados, desde conceitos básicos até análises mais avançadas.
+Este repositório contém os materiais e exercícios do curso de Introdução à Ciência de Dados.
+
+## Estrutura do Projeto
+
+```
+introducao_data_science/
+├── dados/                  # Diretório com datasets
+│   ├── california_housing_train.csv
+│   ├── database.sqlite
+│   └── Iris.csv
+├── notebooks/             # Jupyter notebooks com exercícios
+│   └── semana_3/
+├── scripts/              # Scripts Python organizados por funcionalidade
+│   ├── analise_dados/
+│   ├── machine_learning/
+│   ├── visualizacao/
+│   └── web_scraping/
+├── resultados/           # Resultados de análises e visualizações
+│   └── graficos/
+└── requirements.txt      # Dependências do projeto
+```
+
+## Organização dos Scripts
+
+### Análise de Dados
+- `scripts/analise_dados/`: Scripts relacionados à análise exploratória de dados
+  - Manipulação de dados com Pandas
+  - Análises estatísticas
+  - Processamento de dados
+
+### Machine Learning
+- `scripts/machine_learning/`: Scripts de modelos de machine learning
+  - Algoritmos de classificação
+  - Algoritmos de regressão
+  - Avaliação de modelos
+
+### Visualização
+- `scripts/visualizacao/`: Scripts para criação de visualizações
+  - Gráficos estatísticos
+  - Dashboards
+  - Análises visuais
+
+### Web Scraping
+- `scripts/web_scraping/`: Scripts para coleta de dados da web
+  - Scraping de websites
+  - Coleta de dados de APIs
+
+## Como Usar
+
+1. Clone o repositório
+2. Crie um ambiente virtual:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/Mac
+   .venv\Scripts\activate     # Windows
+   ```
+3. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Dependências Principais
+
+- Python 3.8+
+- pandas
+- numpy
+- scikit-learn
+- matplotlib
+- seaborn
+- jupyter
+
+## Contribuição
+
+Para contribuir com o projeto:
+1. Faça um fork do repositório
+2. Crie uma branch para sua feature
+3. Faça commit das mudanças
+4. Faça push para a branch
+5. Abra um Pull Request
 
 ## 🎯 Objetivos do Projeto
 
