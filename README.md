@@ -1,183 +1,212 @@
 # Introdução à Ciência de Dados
 
-Este repositório contém os materiais e exercícios do curso de Introdução à Ciência de Dados.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Pandas](https://img.shields.io/badge/Pandas-1.3+-green.svg)](https://pandas.pydata.org/)
+[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.0+-orange.svg)](https://scikit-learn.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Estrutura do Projeto
+Este repositório contém os materiais e exercícios do curso de Introdução à Ciência de Dados, incluindo análises de dados, machine learning, visualização e processamento de linguagem natural.
+
+## 📋 Índice
+
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Como Usar](#como-usar)
+- [Dependências](#dependências)
+- [Exemplos de Uso](#exemplos-de-uso)
+- [Contribuição](#contribuição)
+
+## 📁 Estrutura do Projeto
 
 ```
 introducao_data_science/
-├── dados/                  # Diretório com datasets
+├── dados/                  # Datasets e arquivos de dados
 │   ├── california_housing_train.csv
 │   ├── database.sqlite
-│   └── Iris.csv
+│   ├── Iris.csv
+│   ├── machado_de_assis.txt
+│   └── outros_datasets.csv
 ├── notebooks/             # Jupyter notebooks com exercícios
-│   └── semana_3/
+│   ├── semana_3/
+│   ├── exercicio_3_analise_dados.ipynb
+│   └── exercicio_5_manipulacao_dados.ipynb
 ├── scripts/              # Scripts Python organizados por funcionalidade
-│   ├── analise_dados/
-│   ├── machine_learning/
-│   ├── visualizacao/
-│   └── web_scraping/
-├── resultados/           # Resultados de análises e visualizações
-│   └── graficos/
+│   ├── analise_dados/    # Análise exploratória de dados
+│   ├── big_data/         # Processamento de linguagem natural
+│   ├── machine_learning/ # Algoritmos de ML
+│   ├── visualizacao/     # Gráficos e visualizações
+│   └── web_scraping/     # Coleta de dados da web
+├── resultados/           # Resultados de análises
+│   └── graficos/         # Imagens geradas pelos scripts
 └── requirements.txt      # Dependências do projeto
 ```
 
-## Organização dos Scripts
+## 🚀 Funcionalidades
 
-### Análise de Dados
-- `scripts/analise_dados/`: Scripts relacionados à análise exploratória de dados
-  - Manipulação de dados com Pandas
-  - Análises estatísticas
-  - Processamento de dados
+### 📊 Análise de Dados
+- **Manipulação com Pandas**: Operações básicas e avançadas
+- **Análises estatísticas**: Correlações, distribuições, outliers
+- **Processamento de dados**: Limpeza, transformação, agregação
 
-### Machine Learning
-- `scripts/machine_learning/`: Scripts de modelos de machine learning
-  - Algoritmos de classificação
-  - Algoritmos de regressão
-  - Avaliação de modelos
+### 🤖 Machine Learning
+- **Algoritmos de classificação**: KNN, Decision Trees, SVM
+- **Algoritmos de regressão**: Linear Regression, Random Forest
+- **Avaliação de modelos**: Métricas de performance, validação cruzada
 
-### Visualização
-- `scripts/visualizacao/`: Scripts para criação de visualizações
-  - Gráficos estatísticos
-  - Dashboards
-  - Análises visuais
+### 📈 Visualização
+- **Gráficos estatísticos**: Histogramas, boxplots, scatter plots
+- **Dashboards interativos**: Gráficos combinados e personalizados
+- **Análises visuais**: Mapas de calor, correlações, distribuições
 
-### Web Scraping
-- `scripts/web_scraping/`: Scripts para coleta de dados da web
-  - Scraping de websites
-  - Coleta de dados de APIs
+### 🌐 Web Scraping
+- **Coleta de dados**: BeautifulSoup, Requests, Selenium
+- **APIs**: Integração com APIs públicas
+- **Processamento**: Limpeza e estruturação de dados web
 
-## Como Usar
+### 📝 Processamento de Linguagem Natural (NLP)
+- **Análise de sentimento**: VADER para análise de sentimentos
+- **Identificação de nomes próprios**: NLTK e técnicas customizadas
+- **Processamento de texto**: Tokenização, contagem de palavras
+- **Análise de textos literários**: Machado de Assis como exemplo
 
-1. Clone o repositório
-2. Crie um ambiente virtual:
+## 🛠️ Como Usar
+
+### Pré-requisitos
+- Python 3.8 ou superior
+- Git
+
+### Instalação
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seu-usuario/introducao_data_science.git
+   cd introducao_data_science
+   ```
+
+2. **Crie um ambiente virtual:**
    ```bash
    python -m venv .venv
-   source .venv/bin/activate  # Linux/Mac
-   .venv\Scripts\activate     # Windows
+   
+   # Ative o ambiente virtual:
+   # Windows:
+   .venv\Scripts\activate
+   # Linux/Mac:
+   source .venv/bin/activate
    ```
-3. Instale as dependências:
+
+3. **Instale as dependências:**
    ```bash
    pip install -r requirements.txt
    ```
 
-## Dependências Principais
+### Executando os Scripts
 
-- Python 3.8+
-- pandas
-- numpy
-- scikit-learn
-- matplotlib
-- seaborn
-- jupyter
+```bash
+# Análise de dados
+python scripts/analise_dados/exercicio_3_analise_dados.py
 
-## Contribuição
+# Visualização
+python scripts/visualizacao/data_viz.py
 
-Para contribuir com o projeto:
-1. Faça um fork do repositório
-2. Crie uma branch para sua feature
-3. Faça commit das mudanças
-4. Faça push para a branch
-5. Abra um Pull Request
+# Machine Learning
+python scripts/machine_learning/modelo_predicao.py
+
+# Big Data / NLP
+python scripts/big_data/big_data.py
+
+# Web Scraping
+python scripts/web_scraping/web_scraping.py
+```
+
+## 📦 Dependências Principais
+
+| Biblioteca | Versão | Descrição |
+|------------|--------|-----------|
+| **Python** | 3.8+ | Linguagem principal |
+| **pandas** | 1.3+ | Manipulação de dados |
+| **numpy** | 1.21+ | Computação numérica |
+| **matplotlib** | 3.4+ | Visualização básica |
+| **seaborn** | 0.11+ | Visualização estatística |
+| **scikit-learn** | 1.0+ | Machine Learning |
+| **nltk** | 3.6+ | Processamento de linguagem natural |
+| **beautifulsoup4** | 4.9+ | Web scraping |
+| **requests** | 2.25+ | Requisições HTTP |
+| **jupyter** | 1.0+ | Notebooks interativos |
+
+## 📊 Exemplos de Uso
+
+### Análise de Sentimento
+```python
+# Exemplo de análise de sentimento do texto do Machado de Assis
+python scripts/big_data/big_data.py
+```
+
+### Visualização de Dados
+```python
+# Criação de gráficos diversos
+python scripts/visualizacao/data_viz.py
+```
+
+### Machine Learning
+```python
+# Predição de preços de casas
+python scripts/machine_learning/modelo_predicao.py
+```
 
 ## 🎯 Objetivos do Projeto
 
-- Aprender fundamentos de manipulação de dados com Python
-- Praticar visualização de dados com diferentes bibliotecas
-- Explorar técnicas de análise exploratória de dados
-- Implementar modelos básicos de machine learning
-- Trabalhar com dados reais do Kaggle
+- ✅ Aprender fundamentos de manipulação de dados com Python
+- ✅ Praticar visualização de dados com diferentes bibliotecas
+- ✅ Explorar técnicas de análise exploratória de dados
+- ✅ Implementar modelos básicos de machine learning
+- ✅ Trabalhar com dados reais do Kaggle
+- ✅ Introduzir conceitos de processamento de linguagem natural
+- ✅ Desenvolver habilidades de web scraping
 
-## 📚 Conteúdo
+## 📚 Conteúdo Detalhado
 
 ### 1. Manipulação de Dados
-- **scripts_pandas.py**: Operações básicas e avançadas com Pandas
-- **scripts_numpy.py**: Manipulação numérica com NumPy
-- **scripsts_carga_dados.py**: Diferentes formas de carregar dados
+- **carregamento_dados.py**: Diferentes formas de carregar dados
+- **manipulacao_pandas.py**: Operações avançadas com Pandas
+- **manipulacao_numpy.py**: Computação numérica eficiente
 
 ### 2. Visualização de Dados
-- **data_viz.py**: Exemplos com Matplotlib e Seaborn
-- Gráficos de dispersão, barras e linhas
-- Personalização de visualizações
-- Mapas de calor e correlações
+- **data_viz.py**: Exemplos completos com Matplotlib e Seaborn
+- Gráficos de dispersão, barras, linhas e funções matemáticas
+- Personalização avançada de visualizações
+- Gráficos de progresso e interativos
 
-### 3. Web Scraping
-- **web_scraping.py**: Extração de dados da web
+### 3. Machine Learning
+- **introducao_ml.py**: Conceitos fundamentais de ML
+- **algoritmo_classificacao.py**: Implementação de classificadores
+- **modelo_predicao.py**: Predição de preços de casas
+
+### 4. Big Data e NLP
+- **big_data.py**: Análise de sentimento e nomes próprios
+- Processamento de texto do Machado de Assis
+- Identificação de entidades nomeadas
+- Análise de frequência de palavras
+
+### 5. Web Scraping
+- **web_scraping.py**: Coleta de dados da web
 - Uso de BeautifulSoup e Requests
 - Manipulação de HTML e JSON
 
-### 4. Machine Learning
-- **sem_6_machine_learning.py**: Introdução a algoritmos de ML
-- **algoritmo_aprendizado_de_maquina.py**: Implementações práticas
-- KNN, Regressão Linear e outros algoritmos
+## 🤝 Contribuição
 
-### 5. Análise de Dados do Kaggle
-- **sem_7_predicao.py**: Análise do dataset California Housing
-- **exemplo_kaggle.py**: Como usar a API do Kaggle
-- Exemplos práticos de análise exploratória
+Contribuições são muito bem-vindas! Para contribuir:
 
-## 🛠️ Tecnologias Utilizadas
+1. **Fork** o projeto
+2. **Crie uma branch** para sua feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** para a branch (`git push origin feature/AmazingFeature`)
+5. **Abra um Pull Request**
 
-- **Python 3.x**
-- **Pandas**: Manipulação e análise de dados
-- **NumPy**: Computação numérica
-- **Matplotlib** e **Seaborn**: Visualização de dados
-- **Scikit-learn**: Machine Learning
-- **BeautifulSoup**: Web Scraping
-- **Kaggle API**: Acesso a datasets
-
-## 📦 Como Instalar
-
-1. Clone o repositório:
-```bash
-git clone https://github.com/seu-usuario/introducao_data_science.git
-cd introducao_data_science
-```
-
-2. Instale as dependências:
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn beautifulsoup4 kaggle
-```
-
-3. Configure a API do Kaggle:
-   - Crie uma conta no [Kaggle](https://www.kaggle.com)
-   - Baixe o arquivo `kaggle.json` das configurações da sua conta
-   - Coloque o arquivo em `~/.kaggle/kaggle.json` (Linux/Mac) ou `C:\Users\<seu-usuario>\.kaggle\kaggle.json` (Windows)
-
-## 🚀 Como Usar
-
-Cada script pode ser executado independentemente:
-
-```bash
-python scripts_pandas.py
-python data_viz.py
-python sem_7_predicao.py
-```
-
-## 📊 Exemplos de Análises
-
-O repositório inclui diversos exemplos práticos:
-
-- Análise de preços de casas na Califórnia
-- Classificação de flores Iris
-- Análise de dados do mercado financeiro
-- Web scraping de dados de linguagens de programação
-
-## 📝 Exercícios e Práticas
-
-- **4_sem_exerc.py**: Exercícios práticos de análise de dados
-- **5_sem_exerc.py**: Práticas com visualização
-- Diversos exemplos comentados para estudo
-
-## 🤝 Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
-1. Fazer fork do projeto
-2. Criar uma branch para sua feature
-3. Commitar suas mudanças
-4. Fazer push para a branch
-5. Abrir um Pull Request
+### Diretrizes de Contribuição
+- Mantenha o código limpo e bem documentado
+- Adicione comentários explicativos em português
+- Teste seus scripts antes de submeter
+- Siga o padrão de nomenclatura existente
 
 ## 📜 Licença
 
@@ -185,13 +214,19 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ## 📫 Contato
 
-- [Rafael Amorim Honorato]
-- Email: [rafael.honorato03@gmail.com]
-- LinkedIn: [https://www.linkedin.com/in/rafael-honorato03/]
+- **Autor**: Rafael Amorim Honorato
+- **Email**: rafael.honorato03@gmail.com
+- **LinkedIn**: [https://www.linkedin.com/in/rafael-honorato03/]
+- **GitHub**: [https://github.com/seu-usuario]
 
 ## 🙏 Agradecimentos
 
-- Kaggle pela disponibilização dos datasets
-- Comunidade Python e Data Science
-- Todos os contribuidores do projeto
+- **Kaggle** pela disponibilização dos datasets
+- **Comunidade Python** e **Data Science** pelo suporte
+- **Todos os contribuidores** do projeto
+- **[Thaisandre](https://dev.to/thaisandre)** pelo excelente artigo sobre NLTK e Processamento de Linguagem Natural, que serviu como referência fundamental para a implementação da análise de nomes próprios e processamento de texto neste projeto. O artigo pode ser encontrado em: [NLTK e Processamento de Linguagem Natural](https://dev.to/thaisandre/nltk-e-processamento-de-linguagem-natural-3l49)
+
+---
+
+⭐ **Se este projeto foi útil para você, considere dar uma estrela no repositório!**
 
