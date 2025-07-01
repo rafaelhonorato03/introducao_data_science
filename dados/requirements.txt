@@ -1,8 +1,45 @@
-numpy>=1.21.0
+# Requisitos para análise de dados básica
 pandas>=1.3.0
+numpy>=1.21.0
 matplotlib>=3.4.0
 seaborn>=0.11.0
-scikit-learn>=0.24.0
+
+# Requisitos para análise de PDFs
+PyPDF2>=3.0.0
+PyMuPDF>=1.18.0
+
+# Requisitos para NLP e análise de personagens
+spacy>=3.4.0
+textblob>=0.17.0
+
+# Requisitos para análises avançadas
+networkx>=2.6.0
+scikit-learn>=1.0.0
+
+# Requisitos para interface web (opcional)
+streamlit>=1.20.0
+plotly>=5.0.0
+
+# Requisitos para processamento de texto
+nltk>=3.6.0
+wordcloud>=1.8.0
+
+# Requisitos para análise de sentimentos avançada
+transformers>=4.20.0
+torch>=1.12.0
+
+# Requisitos para visualizações interativas
+bokeh>=2.4.0
+holoviews>=1.15.0
+
+# Requisitos para processamento de dados temporais
+dateutil>=2.8.0
+
+# Requisitos para exportação de dados
+openpyxl>=3.0.0
+xlsxwriter>=3.0.0
+
+# Requisitos para jupyter e notebook
 jupyter>=1.0.0
 notebook>=6.4.0
 requests>=2.26.0
