@@ -10,6 +10,7 @@ import fitz  # PyMuPDF
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 from collections import Counter, defaultdict
 from leia.leia import SentimentIntensityAnalyzer
 import networkx as nx
@@ -100,6 +101,33 @@ class AnalisadorDePersonagens:
         plt.tight_layout()
         return fig
 
+    def gerar_grafico_evolucao_dinamico(self, personagens_selecionados):
+        """Gera gráfico de evolução para personagens selecionados dinamicamente."""
+        if not personagens_selecionados: return None
+        
+        # Filtrar apenas personagens que existem nos dados
+        personagens_validos = [p for p in personagens_selecionados if p in self.resultados["posicoes"]]
+        if not personagens_validos: return None
+        
+        fig, ax = plt.subplots(figsize=(14, 8))
+        
+        # Cores para diferentes personagens
+        cores = plt.cm.Set3(np.linspace(0, 1, len(personagens_validos)))
+        
+        for i, personagem in enumerate(personagens_validos):
+            posicoes_norm = [(p / self.total_caracteres) * 100 for p in self.resultados["posicoes"][personagem]]
+            if posicoes_norm:
+                sns.kdeplot(posicoes_norm, label=personagem, fill=True, alpha=0.3, 
+                           color=cores[i], ax=ax, linewidth=2)
+        
+        ax.set_title(f'Evolução dos Personagens Selecionados ao Longo do Livro', fontsize=16, fontweight='bold')
+        ax.set_xlabel('Posição no Texto (%)', fontsize=12)
+        ax.set_ylabel('Densidade de Menções', fontsize=12)
+        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=10)
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        return fig
+
     def gerar_grafico_sentimentos(self, top_n=25):
         personagens_principais = [p for p, f in self.resultados["frequencia"].most_common(top_n)]
         sentimentos_medios = {p: sum(self.resultados["sentimentos"][p]) / len(self.resultados["sentimentos"][p]) for p in personagens_principais if self.resultados["sentimentos"][p]}
@@ -119,18 +147,90 @@ class AnalisadorDePersonagens:
         personagens_principais = [p for p, f in self.resultados["frequencia"].most_common(top_n)]
         if not personagens_principais: return None
         
+        # Calcular tamanhos normalizados para limitar o tamanho das bolhas
+        frequencias = [self.resultados["frequencia"][p] for p in personagens_principais]
+        max_freq = max(frequencias) if frequencias else 1
+        min_freq = min(frequencias) if frequencias else 1
+        
+        # Normalizar tamanhos entre 10 e 50 (valores menores = bolhas menores)
+        def normalizar_tamanho(freq):
+            if max_freq == min_freq:
+                return 20  # tamanho padrão se todas as frequências forem iguais
+            return 10 + (freq - min_freq) / (max_freq - min_freq) * 40
+        
         G = nx.Graph()
         for personagem in personagens_principais:
-            G.add_node(personagem, size=self.resultados["frequencia"][personagem], title=f"{personagem}\nMenções: {self.resultados['frequencia'][personagem]}")
+            freq = self.resultados["frequencia"][personagem]
+            tamanho_normalizado = normalizar_tamanho(freq)
+            G.add_node(personagem, size=tamanho_normalizado, title=f"{personagem}\nMenções: {freq}")
 
+        # Normalizar pesos das arestas para controlar a espessura das linhas
+        pesos_arestas = [peso for par, peso in self.resultados["relacionamentos"].items() 
+                        if par[0] in G and par[1] in G]
+        max_peso = max(pesos_arestas) if pesos_arestas else 1
+        min_peso = min(pesos_arestas) if pesos_arestas else 1
+        
+        def normalizar_peso(peso):
+            if max_peso == min_peso:
+                return 1.0  # peso padrão se todos os pesos forem iguais
+            return 0.5 + (peso - min_peso) / (max_peso - min_peso) * 2.5
+        
         for par, peso in self.resultados["relacionamentos"].items():
             p1, p2 = par
-            if p1 in G and p2 in G: G.add_edge(p1, p2, weight=peso, title=f"Interações: {peso}")
+            if p1 in G and p2 in G:
+                peso_normalizado = normalizar_peso(peso)
+                G.add_edge(p1, p2, weight=peso_normalizado, title=f"Interações: {peso}")
 
         G.remove_nodes_from(list(nx.isolates(G)))
         
         net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white")
         net.from_nx(G)
+        
+        # Configurações personalizadas para controlar melhor o tamanho das bolhas e espessura das linhas
+        net.set_options("""
+        var options = {
+          "nodes": {
+            "font": { "size": 14 },
+            "scaling": {
+              "min": 10,
+              "max": 50,
+              "label": {
+                "enabled": true,
+                "min": 12,
+                "max": 16
+              }
+            }
+          },
+          "edges": { 
+            "color": { "inherit": true }, 
+            "smooth": false,
+            "width": {
+              "min": 0.5,
+              "max": 3
+            },
+            "scaling": {
+              "min": 0.5,
+              "max": 3,
+              "label": {
+                "enabled": true,
+                "min": 8,
+                "max": 12
+              }
+            }
+          },
+          "physics": {
+            "forceAtlas2Based": {
+              "gravitationalConstant": -100,
+              "centralGravity": 0.01,
+              "springLength": 200,
+              "springConstant": 0.09,
+              "avoidOverlap": 1
+            },
+            "minVelocity": 0.75,
+            "solver": "forceAtlas2Based"
+          }
+        }
+        """)
         
         # --- CORREÇÃO APLICADA AQUI ---
         # 1. Salva o grafo em um arquivo HTML com nome fixo.
