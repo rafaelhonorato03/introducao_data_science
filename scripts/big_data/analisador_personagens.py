@@ -38,10 +38,23 @@ class AnalisadorDePersonagens:
     @staticmethod
     def carregar_modelo_spacy():
         """Carrega o modelo Spacy (para ser cacheado pelo Streamlit)."""
+        import subprocess
+        import sys
+        
         try:
-            return spacy.load("pt_core_news_lg")
+            return spacy.load("pt_core_news_sm")
         except OSError:
-            raise OSError("Modelo 'pt_core_news_lg' não encontrado. Por favor, execute no seu terminal: python -m spacy download pt_core_news_lg")
+            try:
+                # Tenta baixar o modelo se não estiver disponível
+                subprocess.check_call([sys.executable, "-m", "spacy", "download", "pt_core_news_sm"])
+                return spacy.load("pt_core_news_sm")
+            except:
+                # Se falhar, usa o modelo em inglês como fallback
+                try:
+                    return spacy.load("en_core_web_sm")
+                except OSError:
+                    subprocess.check_call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+                    return spacy.load("en_core_web_sm")
 
     def _limpar_nome(self, nome_texto):
         titulos = ['Sor', 'Lorde', 'Lady', 'Rei', 'Rainha', 'Senhor', 'Senhora', 'Príncipe', 'Princesa']
