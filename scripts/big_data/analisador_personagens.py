@@ -1,12 +1,5 @@
-#
-# arquivo: analisador_personagens.py
-#
-# ==============================================================================
-# MÓDULO DE ANÁLISE NLP (CORREÇÃO PARA PYVIS)
-# ==============================================================================
-
 import spacy
-import fitz  # PyMuPDF
+import fitz
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -20,7 +13,7 @@ import gc
 from pathlib import Path
 import re
 from itertools import combinations
-import os # Importado para manipulação de arquivos temporários
+import os
 
 class AnalisadorDePersonagens:
     """
@@ -155,6 +148,72 @@ class AnalisadorDePersonagens:
         plt.tight_layout()
         return fig
 
+    def gerar_grafico_dispersao(self, top_n=15):
+        
+        personagens_principais = [p for p, f in self.resultados["frequencia"].most_common(top_n)]
+        if not personagens_principais: return None
+        
+        # Criar figura com subplots - um para cada personagem
+        n_personagens = len(personagens_principais)
+        fig, axes = plt.subplots(n_personagens, 1, figsize=(14, 2 * n_personagens))
+        
+        # Se só há um personagem, axes não é uma lista
+        if n_personagens == 1:
+            axes = [axes]
+        
+        # Cores para diferentes personagens
+        cores = plt.cm.tab10(np.linspace(0, 1, n_personagens))
+        
+        for i, personagem in enumerate(personagens_principais):
+            ax = axes[i]
+            posicoes = self.resultados["posicoes"][personagem]
+            
+            if posicoes:
+                # Normalizar posições para porcentagem do texto
+                posicoes_norm = [(p / self.total_caracteres) * 100 for p in posicoes]
+                
+                # Criar barrinhas verticais (|) para cada aparição
+                for pos in posicoes_norm:
+                    ax.axvline(x=pos, ymin=0.3, ymax=0.7, color=cores[i], linewidth=1.5, alpha=0.8)
+                
+                # Configurar eixo
+                ax.set_xlim(0, 100)
+                ax.set_ylim(0, 1)
+                ax.set_yticks([])  # Remove ticks do eixo Y
+                ax.set_ylabel(personagem, fontsize=12, fontweight='bold', rotation=0, ha='right', va='center')
+                
+                # Adicionar grid sutil
+                ax.grid(True, alpha=0.2, axis='x')
+                
+                # Adicionar título apenas no primeiro gráfico
+                if i == 0:
+                    ax.set_title('Dispersão de Aparições dos Personagens ao Longo do Livro', 
+                               fontsize=16, fontweight='bold', pad=20)
+                
+                # Adicionar rótulos de porcentagem apenas no último gráfico
+                if i == n_personagens - 1:
+                    ax.set_xlabel('Posição no Texto (%)', fontsize=12)
+                    # Adicionar algumas marcas de porcentagem
+                    ax.set_xticks([0, 25, 50, 75, 100])
+                    ax.set_xticklabels(['0%', '25%', '50%', '75%', '100%'])
+                else:
+                    ax.set_xticks([])  # Remove ticks do eixo X para gráficos intermediários
+                
+                # Adicionar contador de aparições
+                ax.text(102, 0.5, f'({len(posicoes)}x)', fontsize=10, va='center', 
+                       bbox=dict(boxstyle="round,pad=0.3", facecolor='lightgray', alpha=0.7))
+            else:
+                # Caso não haja posições para o personagem
+                ax.set_xlim(0, 100)
+                ax.set_ylim(0, 1)
+                ax.set_yticks([])
+                ax.set_ylabel(personagem, fontsize=12, fontweight='bold', rotation=0, ha='right', va='center')
+                ax.text(50, 0.5, 'Nenhuma aparição', ha='center', va='center', 
+                       fontsize=10, style='italic', color='gray')
+        
+        plt.tight_layout()
+        return fig
+
     def gerar_rede_relacionamentos(self, top_n=30):
         """Modificado para salvar em um arquivo temporário e ler o HTML de volta."""
         personagens_principais = [p for p, f in self.resultados["frequencia"].most_common(top_n)]
@@ -245,17 +304,12 @@ class AnalisadorDePersonagens:
         }
         """)
         
-        # --- CORREÇÃO APLICADA AQUI ---
-        # 1. Salva o grafo em um arquivo HTML com nome fixo.
         caminho_arquivo_html = "rede_temp.html"
         net.write_html(caminho_arquivo_html)
 
-        # 2. Lê o conteúdo do arquivo de volta para uma variável.
         with open(caminho_arquivo_html, 'r', encoding='utf-8') as f:
             html_content = f.read()
 
-        # 3. (Opcional) Remove o arquivo temporário se não quiser que ele fique na pasta.
-        # os.remove(caminho_arquivo_html)
+        os.remove(caminho_arquivo_html)
             
-        # 4. Retorna o conteúdo HTML para ser renderizado pelo Streamlit.
         return html_content

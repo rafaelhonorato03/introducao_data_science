@@ -44,6 +44,7 @@ def processar_livro(pdf_bytes):
         "fig_frequencia": analisador.gerar_grafico_frequencia(),
         "fig_evolucao": analisador.gerar_grafico_evolucao(),
         "fig_sentimentos": analisador.gerar_grafico_sentimentos(),
+        "fig_dispersao": analisador.gerar_grafico_dispersao(),
         "html_rede": analisador.gerar_rede_relacionamentos(),
         "analisador": analisador,  # Guarda o analisador para acesso aos dados brutos
     }
@@ -73,7 +74,7 @@ if uploaded_file is not None:
     resultados = st.session_state.resultados
     st.header("Resultados da Análise", divider='rainbow')
 
-    tab1, tab2, tab3 = st.tabs(["📊 Gráficos de Personagens", "❤️ Análise de Sentimentos", "🕸️ Rede de Relacionamentos"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Gráficos de Personagens", "📈 Dispersão de Aparições", "❤️ Análise de Sentimentos", "🕸️ Rede de Relacionamentos"])
 
     with tab1:
         st.subheader("Frequência de Personagens")
@@ -130,13 +131,21 @@ if uploaded_file is not None:
             st.warning("Dados do analisador não disponíveis.")
 
     with tab2:
+        st.subheader("Dispersão de Aparições dos Personagens")
+        st.markdown("**Cada barrinha vertical (|) representa uma aparição do personagem no texto.**")
+        if resultados["fig_dispersao"]:
+            st.pyplot(resultados["fig_dispersao"])
+        else:
+            st.warning("Não foram encontrados personagens para gerar este gráfico.")
+
+    with tab3:
         st.subheader("Sentimento Médio por Personagem")
         if resultados["fig_sentimentos"]:
             st.pyplot(resultados["fig_sentimentos"])
         else:
             st.warning("Não foram encontrados dados de sentimento para gerar este gráfico.")
 
-    with tab3:
+    with tab4:
         st.subheader("Grafo Interativo de Relacionamentos")
         if resultados["html_rede"]:
             components.html(resultados["html_rede"], height=800)
