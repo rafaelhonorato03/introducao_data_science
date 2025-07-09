@@ -14,10 +14,26 @@ from pathlib import Path
 import re
 from itertools import combinations
 import os
+import streamlit as st
+try:
+    import community.community_louvain as community_louvain
+except ImportError:
+    try:
+        from community import community_louvain
+    except ImportError:
+        # Fallback: tentar instalar e importar
+        import subprocess
+        import sys
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "python-louvain"])
+            import community.community_louvain as community_louvain
+        except:
+            # Se não conseguir instalar, definir como None para evitar erros
+            community_louvain = None
 
 class AnalisadorDePersonagens:
     """
-    Classe de lógica de análise. Modificada para retornar objetos para o Streamlit.
+    Classe de lógica de análise
     """
     def __init__(self):
         self.nlp = self.carregar_modelo_spacy()
@@ -313,3 +329,199 @@ class AnalisadorDePersonagens:
         os.remove(caminho_arquivo_html)
             
         return html_content
+
+    def analisar_pontes_narrativas(self, top_n = 10):
+        """ Calcula e retorna os personagens com maior centralidade de intermediação. """
+        # Gerando grafo
+        G = nx.Graph()
+        # Buscando muitos personagens
+        personagens_principais = {p for p, f in self.resultados["frequencia"].most_common(50)}
+
+        for par, peso in self.resultados["relacionamentos"].items():
+            p1, p2 = par
+            if p1 in personagens_principais and p2 in personagens_principais:
+                G.add_edge(p1, p2, weight=peso)
+        
+        if G.number_of_nodes() == 0:
+            return None
+        
+        # Calculando a centralidade de intermediação
+        # O 'weight' faz com que as conexões mais fortes (mais interações) sejam caminhos 'mais curtos'
+        betweenness = nx.betweenness_centrality(G, weight='weight', normalized=True)
+
+        # Criar um DataFrame para fácil visualização no streamlit
+        df_pontes = pd.DataFrame(list(betweenness.items()), columns=['Personagem', 'Centralidade de Intermediação'])
+        df_pontes = df_pontes.sort_values('Centralidade de Intermediação', ascending=False).head(top_n)
+
+        return df_pontes
+    
+    def gerar_rede_comunidades(self, top_n=50):
+        """Gera rede de comunidades usando algoritmo Louvain."""
+        personagens_principais = {p for p, f in self.resultados["frequencia"].most_common(top_n)}
+        if not personagens_principais: 
+            return None
+        
+        G = nx.Graph()
+        # Adicionando nós primeiro
+        for p in personagens_principais:
+            G.add_node(p)
+
+        # Adicionando as arestas
+        for par, peso in self.resultados["relacionamentos"].items():
+            p1, p2 = par
+            if p1 in G and p2 in G:
+                G.add_edge(p1, p2, weight=peso)
+        
+        G.remove_nodes_from(list(nx.isolates(G)))
+        if G.number_of_nodes() == 0: 
+            return None
+
+        # Detecção de comunidades
+        if community_louvain is None:
+            st.warning("Módulo python-louvain não disponível. Instalando...")
+            return None
+        
+        try:
+            partition = community_louvain.best_partition(G, weight='weight')
+        except Exception as e:
+            st.error(f"Erro na detecção de comunidades: {e}")
+            return None
+
+        # Contar número de comunidades
+        num_comunidades = len(set(partition.values()))
+        
+        # Adicionando informações da comunidade e o tamanho aos nós do grafo
+        max_freq = self.resultados["frequencia"].most_common(1)[0][1] if self.resultados["frequencia"] else 1
+        
+        for node in G.nodes():
+            freq = self.resultados["frequencia"][node]
+            # Normalizar tamanho entre 15 e 50
+            tamanho_normalizado = 15 + (freq / max_freq) * 35
+            
+            G.nodes[node]['group'] = partition[node]  # O group é usado para colorir
+            G.nodes[node]['size'] = tamanho_normalizado
+            G.nodes[node]['title'] = f"{node}<br>Menções: {freq}<br>Comunidade: {partition[node]}"
+
+        net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white")
+        net.from_nx(G)
+        
+        # Configurações personalizadas para melhor visualização
+        net.set_options(f"""
+        var options = {{
+          "nodes": {{
+            "font": {{ "size": 14, "color": "#ffffff" }},
+            "scaling": {{
+              "min": 15,
+              "max": 50,
+              "label": {{
+                "enabled": true,
+                "min": 12,
+                "max": 16
+              }}
+            }}
+          }},
+          "edges": {{ 
+            "color": {{ "inherit": true }}, 
+            "smooth": false,
+            "width": {{
+              "min": 0.5,
+              "max": 3
+            }}
+          }},
+          "physics": {{
+            "forceAtlas2Based": {{
+              "gravitationalConstant": -100,
+              "centralGravity": 0.01,
+              "springLength": 200,
+              "springConstant": 0.09,
+              "avoidOverlap": 1
+            }},
+            "minVelocity": 0.75,
+            "solver": "forceAtlas2Based"
+          }},
+          "groups": {{
+            "0": {{ "color": "#ff7675" }},
+            "1": {{ "color": "#74b9ff" }},
+            "2": {{ "color": "#55a3ff" }},
+            "3": {{ "color": "#a29bfe" }},
+            "4": {{ "color": "#fd79a8" }},
+            "5": {{ "color": "#fdcb6e" }},
+            "6": {{ "color": "#6c5ce7" }},
+            "7": {{ "color": "#00b894" }},
+            "8": {{ "color": "#e17055" }},
+            "9": {{ "color": "#636e72" }}
+          }}
+        }}
+        """)
+
+        caminho_arquivo_html = "rede_comunidades.html"
+        net.write_html(caminho_arquivo_html)
+        
+        with open(caminho_arquivo_html, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        os.remove(caminho_arquivo_html)
+        
+        # Adicionar informações sobre as comunidades detectadas
+        if st:
+            st.info(f"🔍 **Detectadas {num_comunidades} comunidades** de personagens no texto.")
+        
+        return html_content
+    
+    def obter_estatisticas_comunidades(self, top_n=50):
+        """Retorna estatísticas detalhadas das comunidades detectadas."""
+        personagens_principais = {p for p, f in self.resultados["frequencia"].most_common(top_n)}
+        if not personagens_principais: 
+            return None
+        
+        G = nx.Graph()
+        for p in personagens_principais:
+            G.add_node(p)
+
+        for par, peso in self.resultados["relacionamentos"].items():
+            p1, p2 = par
+            if p1 in G and p2 in G:
+                G.add_edge(p1, p2, weight=peso)
+        
+        G.remove_nodes_from(list(nx.isolates(G)))
+        if G.number_of_nodes() == 0: 
+            return None
+
+        if community_louvain is None:
+            return None
+        
+        try:
+            partition = community_louvain.best_partition(G, weight='weight')
+        except Exception:
+            return None
+
+        # Calcular estatísticas por comunidade
+        comunidades_stats = {}
+        for node, comunidade in partition.items():
+            if comunidade not in comunidades_stats:
+                comunidades_stats[comunidade] = {
+                    'personagens': [],
+                    'frequencia_total': 0,
+                    'interacoes_internas': 0,
+                    'interacoes_externas': 0
+                }
+            
+            freq = self.resultados["frequencia"][node]
+            comunidades_stats[comunidade]['personagens'].append((node, freq))
+            comunidades_stats[comunidade]['frequencia_total'] += freq
+
+        # Calcular interações internas e externas
+        for par, peso in self.resultados["relacionamentos"].items():
+            p1, p2 = par
+            if p1 in partition and p2 in partition:
+                if partition[p1] == partition[p2]:
+                    comunidades_stats[partition[p1]]['interacoes_internas'] += peso
+                else:
+                    comunidades_stats[partition[p1]]['interacoes_externas'] += peso
+                    comunidades_stats[partition[p2]]['interacoes_externas'] += peso
+
+        # Ordenar personagens por frequência em cada comunidade
+        for comunidade in comunidades_stats:
+            comunidades_stats[comunidade]['personagens'].sort(key=lambda x: x[1], reverse=True)
+
+        return comunidades_stats

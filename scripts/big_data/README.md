@@ -1,203 +1,165 @@
-# 📚 Análise de Personagens em PDFs
+# 📚 Analisador de Personagens em Livros PDF
 
-Sistema completo para análise de personagens em arquivos PDF usando processamento de linguagem natural e análise de sentimentos.
+Um aplicativo Streamlit para análise avançada de personagens em livros em formato PDF, utilizando técnicas de Processamento de Linguagem Natural (NLP) e Análise de Redes Sociais.
 
 ## 🚀 Funcionalidades
 
-- **Extração inteligente de texto** de PDFs usando PyMuPDF
-- **Identificação automática de personagens** usando spaCy NER (Named Entity Recognition)
-- **Análise de frequência** dos personagens mais importantes
-- **Análise de sentimentos** por personagem usando LEIA (análise em português)
-- **Gráficos de evolução temporal** mostrando onde os personagens aparecem no texto
-- **Rede de relacionamentos** interativa entre personagens
-- **Interface web** com Streamlit
-- **Processamento otimizado** para arquivos grandes
+### 📊 Análises Disponíveis
 
-## 📁 Arquivos Principais
+1. **Frequência de Personagens**
+   - Top personagens mais mencionados
+   - Gráficos de barras interativos
 
-### `analisador_personagens.py`
-- Classe principal `AnalisadorDePersonagens`
-- Processamento de linguagem natural com spaCy
-- Análise de sentimentos com LEIA
-- Geração de gráficos e visualizações
-- Rede de relacionamentos com NetworkX e PyVis
+2. **Evolução Temporal**
+   - Distribuição das menções ao longo do livro
+   - Gráficos de densidade (KDE)
+   - Seleção dinâmica de personagens
 
-### `app.py`
-- Interface web interativa com Streamlit
-- Upload de arquivos PDF
-- Cache inteligente para otimização
-- Visualizações dinâmicas e interativas
-- Controles de seleção de personagens
+3. **Dispersão de Aparições**
+   - Visualização da posição de cada menção no texto
+   - Barrinhas verticais representando aparições
 
-### `big_data.py`
-- Script de demonstração de técnicas de contagem de palavras
-- Análise de sentimentos do texto do Machado de Assis
-- Comparação de diferentes métodos de processamento de texto
-- Exemplos práticos de análise de dados
+4. **Análise de Sentimentos**
+   - Sentimento médio associado a cada personagem
+   - Código de cores (verde=positivo, vermelho=negativo)
+
+5. **Rede de Relacionamentos**
+   - Grafo interativo de conexões entre personagens
+   - Tamanho dos nós baseado na frequência
+   - Espessura das arestas baseada nas interações
+
+6. **Personagens-Ponte** ⭐ **NOVO!**
+   - Análise de centralidade de intermediação
+   - Identificação de personagens conectores da narrativa
+
+## 🛠️ Instalação
+
+### Opção 1: Script Automático (Recomendado)
+
+```bash
+cd scripts/big_data
+python setup.py
+```
+
+### Opção 2: Instalação Manual
+
+```bash
+# Instalar dependências
+pip install -r requirements.txt
+
+# Baixar modelos do Spacy
+python -m spacy download pt_core_news_sm
+python -m spacy download en_core_web_sm
+```
 
 ## 🎯 Como Usar
 
-### 1. Via Interface Web (Recomendado)
-```bash
-cd scripts/big_data
-streamlit run app.py
-```
-
-### 2. Via Python Direto
-```python
-from analisador_personagens import AnalisadorDePersonagens
-
-# Cria analisador
-analisador = AnalisadorDePersonagens()
-
-# Analisa PDF (bytes do arquivo)
-with open("dados/seu_livro.pdf", "rb") as f:
-    pdf_bytes = f.read()
-analisador.analisar_livro(pdf_bytes)
-
-# Gera visualizações
-fig_freq = analisador.gerar_grafico_frequencia()
-fig_evol = analisador.gerar_grafico_evolucao()
-fig_sent = analisador.gerar_grafico_sentimentos()
-html_rede = analisador.gerar_rede_relacionamentos()
-```
-
-### 3. Execução do Script de Demonstração
-```bash
-cd scripts/big_data
-python big_data.py
-```
-
-## 📊 Resultados e Visualizações
-
-### 1. Gráfico de Frequência de Personagens
-- Top 25 personagens mais frequentes
-- Gráfico de barras horizontal
-- Ordenação por número de menções
-
-### 2. Dispersão de Aparições dos Personagens
-- Barrinhas verticais (|) mostrando cada aparição
-- Visualização ponto a ponto no texto
-- Contador de aparições por personagem
-- Distribuição temporal precisa
-
-### 3. Evolução Temporal dos Personagens
-- Distribuição de menções ao longo do texto
-- Gráfico de densidade (KDE)
-- Seleção dinâmica de personagens
-- Visualização da progressão da história
-
-### 4. Análise de Sentimentos
-- Sentimento médio por personagem
-- Classificação: Positivo, Negativo, Neutro
-- Gráfico de barras colorido por sentimento
-
-### 5. Rede de Relacionamentos
-- Grafo interativo com PyVis
-- Nós representam personagens (tamanho baseado na frequência)
-- Arestas representam interações entre personagens
-- Visualização 3D interativa
-
-## 🔧 Tecnologias Utilizadas
-
-### Processamento de Linguagem Natural
-- **spaCy**: Reconhecimento de entidades nomeadas (NER)
-- **LEIA**: Análise de sentimentos em português
-- **NLTK**: Processamento de texto adicional
-
-### Visualização e Análise
-- **Matplotlib/Seaborn**: Gráficos estáticos
-- **NetworkX**: Análise de redes
-- **PyVis**: Visualização interativa de grafos
-- **Streamlit**: Interface web
-
-### Manipulação de Dados
-- **Pandas**: Manipulação de dados
-- **NumPy**: Computação numérica
-- **PyMuPDF**: Extração de texto de PDFs
-
-## ⚙️ Configurações e Otimizações
-
-### Processamento em Chunks
-- Processamento em blocos de 50.000 caracteres
-- Controle de memória com garbage collection
-- Cache inteligente do Streamlit
-
-### Modelos de Linguagem
-- **pt_core_news_sm**: Modelo em português (padrão)
-- **en_core_web_sm**: Fallback para inglês
-- Download automático de modelos
-
-### Limpeza de Dados
-- Remoção de títulos honoríficos (Sor, Lorde, etc.)
-- Filtragem de nomes muito curtos (< 3 caracteres)
-- Normalização de nomes próprios
-
-## 📈 Performance
-
-| Tamanho do PDF | Tempo Estimado | Memória |
-|----------------|----------------|---------|
-| < 100 páginas  | 30-60 segundos | 200MB   |
-| 100-500 páginas| 1-3 minutos    | 400MB   |
-| > 500 páginas  | 3-10 minutos   | 600MB   |
-
-## 🎉 Vantagens do Sistema
-
-- ✅ **Análise em português** nativo
-- ✅ **Interface web intuitiva**
-- ✅ **Visualizações interativas**
-- ✅ **Processamento otimizado**
-- ✅ **Cache inteligente**
-- ✅ **Análise de sentimentos**
-- ✅ **Rede de relacionamentos**
-
-## 📝 Requisitos
-
-```bash
-pip install -r requirements.txt
-```
-
-### Dependências Principais
-- streamlit
-- pandas, numpy
-- matplotlib, seaborn
-- spacy, nltk
-- networkx, pyvis
-- PyMuPDF
-- LEIA (análise de sentimentos em português)
-
-## 🚀 Início Rápido
-
-1. **Instale as dependências:**
+1. **Execute o aplicativo:**
    ```bash
    cd scripts/big_data
-   pip install -r requirements.txt
-   ```
-
-2. **Execute a aplicação:**
-   ```bash
    streamlit run app.py
    ```
 
-3. **Faça upload de um PDF** na interface web
+2. **Acesse no navegador:**
+   ```
+   http://localhost:8501
+   ```
 
-4. **Visualize os resultados** nas diferentes abas:
-   - 📊 Gráficos de Personagens
-   - 📈 Dispersão de Aparições
-   - ❤️ Análise de Sentimentos  
-   - 🕸️ Rede de Relacionamentos
+3. **Faça upload de um PDF:**
+   - Arraste e solte um arquivo PDF
+   - Aguarde a análise (pode demorar alguns minutos)
 
-## 📚 Exemplos de Uso
+4. **Explore os resultados:**
+   - Navegue pelas abas para ver diferentes análises
+   - Use os controles interativos para personalizar visualizações
 
-### Análise de Livros Clássicos
-- Machado de Assis
+## 📋 Requisitos
 
-### Casos de Uso
-- Análise literária
-- Estudos de personagens
-- Pesquisa em humanidades digitais
-- Análise de narrativas
+- Python 3.8+
+- 4GB+ RAM (recomendado)
+- Conexão com internet (para download de modelos)
+
+## 🔧 Dependências Principais
+
+- **Streamlit**: Interface web
+- **Spacy**: Processamento de linguagem natural
+- **PyMuPDF**: Leitura de arquivos PDF
+- **NetworkX**: Análise de redes
+- **Pyvis**: Visualização de grafos
+- **Leia**: Análise de sentimentos em português
+- **Python-Louvain**: Detecção de comunidades
+
+## 📊 Exemplos de Análise
+
+### Personagens-Ponte
+Esta nova funcionalidade identifica personagens que funcionam como "pontes" na narrativa:
+
+- **Centralidade de Intermediação**: Mede quantas vezes um personagem aparece no caminho mais curto entre outros personagens
+- **Conectores Narrativos**: Personagens que ligam diferentes grupos de personagens
+- **Fluxo da História**: Essenciais para o desenvolvimento da trama
+
+### Interpretação dos Resultados
+
+- **Valores altos**: Personagem é ponte entre diferentes grupos
+- **Valores baixos**: Personagem mais isolado ou em grupo específico
+- **Zero**: Personagem não conecta outros grupos
+
+## 🐛 Solução de Problemas
+
+### Erro de Importação do Community
+Se encontrar erro com `community_louvain`:
+```bash
+pip install python-louvain
+```
+
+### Modelos Spacy Não Encontrados
+```bash
+python -m spacy download pt_core_news_sm
+python -m spacy download en_core_web_sm
+```
+
+### PDF Muito Grande
+- O aplicativo processa PDFs de qualquer tamanho
+- Para PDFs muito grandes (>100MB), pode demorar vários minutos
+- Use a barra de progresso para acompanhar
+
+## 🔄 Cache e Performance
+
+- **Cache Inteligente**: Resultados são salvos para evitar reprocessamento
+- **Identificação por Arquivo**: Cada arquivo tem cache único
+- **Limpeza Automática**: Cache é limpo quando arquivo é removido
+
+## 📈 Melhorias Futuras
+
+- [ ] Análise por capítulos
+- [ ] Detecção de diálogos
+- [ ] Comparação entre livros
+- [ ] Exportação de resultados
+- [ ] Análise de cenas
+- [ ] Interface mais responsiva
+
+## 🤝 Contribuição
+
+Para contribuir com o projeto:
+
+1. Fork o repositório
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+## 📞 Suporte
+
+Se encontrar problemas ou tiver sugestões:
+
+1. Verifique a seção de solução de problemas
+2. Abra uma issue no GitHub
+3. Consulte a documentação das dependências
 
 ---
 
-**Sistema desenvolvido para análise avançada de personagens em PDFs usando técnicas de processamento de linguagem natural! 📚✨** 
+**Desenvolvido com ❤️ para análise de literatura** 

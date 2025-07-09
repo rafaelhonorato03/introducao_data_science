@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from operator import itemgetter
 
 class GraphVisualization:
     def __init__(self):
@@ -27,7 +28,7 @@ G.addEdge(1, 80)
 G.visualize()
 
 
-# Formando graficos com aparencia 3D
+# Formando graficos com aparencia 2D
 G = nx.grid_graph([3, 3])
 
 for line in nx.generate_adjlist(G):
@@ -47,13 +48,16 @@ m = 2
 seed = 20532
 G = nx.barabasi_albert_graph(n, m, seed=seed)
 
+#Encontra o nó com maior grau (hub)
 node_and_degree = G.degree()
 (largest_hub, degree) = sorted(node_and_degree, key=itemgetter(1))[-1]
 
+# Cria um 'ego graph' para o hub
 hub_ego = nx.ego_graph(G, largest_hub)
 
+# Visualização do ego graph
 pos = nx.spring_layout(hub_ego, seed=seed)
-nx.draw(hub_ego, pos, node_color='b', nose_size=50, with_labeels=False)
+nx.draw(hub_ego, pos, node_color='b', node_size=50, with_labels=False)
 
 options = {'node_size': 310, 'node_color': 'r'}
 nx.draw_networkx_nodes(hub_ego, pos, nodelist={largest_hub}, **options)

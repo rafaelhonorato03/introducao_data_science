@@ -46,6 +46,7 @@ def processar_livro(pdf_bytes):
         "fig_sentimentos": analisador.gerar_grafico_sentimentos(),
         "fig_dispersao": analisador.gerar_grafico_dispersao(),
         "html_rede": analisador.gerar_rede_relacionamentos(),
+        "html_comunidades": analisador.gerar_rede_comunidades(),
         "analisador": analisador,  # Guarda o analisador para acesso aos dados brutos
     }
     return resultados_visuais
@@ -74,7 +75,7 @@ if uploaded_file is not None:
     resultados = st.session_state.resultados
     st.header("Resultados da Análise", divider='rainbow')
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Gráficos de Personagens", "📈 Dispersão de Aparições", "❤️ Análise de Sentimentos", "🕸️ Rede de Relacionamentos"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📊 Gráficos de Personagens", "📈 Dispersão de Aparições", "❤️ Análise de Sentimentos", "🕸️ Rede de Relacionamentos", "🌉 Personagens-Ponte", "🏘️ Detecção de Comunidades"])
 
     with tab1:
         st.subheader("Frequência de Personagens")
@@ -151,6 +152,123 @@ if uploaded_file is not None:
             components.html(resultados["html_rede"], height=800)
         else:
             st.warning("Não foram encontradas interações suficientes para gerar a rede de relacionamentos.")
+
+    with tab5:
+        st.subheader("Personagens-Ponte da Narrativa")
+        st.markdown("**Estes personagens são os principais conectores da narrativa, ligando diferentes núcleos de personagens.**")
+        
+        if resultados["analisador"]:
+            df_pontes = resultados["analisador"].analisar_pontes_narrativas()
+            if df_pontes is not None and not df_pontes.empty:
+                st.dataframe(df_pontes, use_container_width=True)
+                
+                # Adicionar informações adicionais sobre a análise
+                st.markdown("---")
+                st.markdown("**Sobre a Centralidade de Intermediação:**")
+                st.markdown("""
+                - **Valores mais altos** indicam personagens que são "pontes" entre diferentes grupos
+                - **Personagens centrais** aparecem em muitas cenas com diferentes conjuntos de personagens
+                - **Conectores narrativos** são essenciais para o fluxo da história
+                """)
+            else:
+                st.warning("Não foram encontrados dados suficientes para analisar personagens-ponte.")
+        else:
+            st.warning("Dados do analisador não disponíveis.")
+
+    with tab6:
+        st.subheader("Detecção de Comunidades de Personagens")
+        st.markdown("**Esta análise identifica grupos naturais de personagens que interagem mais entre si do que com outros grupos.**")
+        
+        # Controles para personalizar a análise
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            st.write("**Configurações:**")
+            top_n_comunidades = st.slider(
+                "Top N personagens para análise:",
+                min_value=10,
+                max_value=100,
+                value=50,
+                help="Número de personagens mais frequentes a incluir na análise de comunidades"
+            )
+            
+            if st.button("🔄 Regenerar Comunidades", help="Regenera a análise de comunidades com as novas configurações"):
+                if resultados["analisador"]:
+                    html_comunidades = resultados["analisador"].gerar_rede_comunidades(top_n_comunidades)
+                    if html_comunidades:
+                        st.session_state.html_comunidades_temp = html_comunidades
+                        st.success("Comunidades regeneradas com sucesso!")
+                    else:
+                        st.error("Erro ao gerar comunidades.")
+        
+        with col2:
+            st.write("**Sobre a Detecção de Comunidades:**")
+            st.markdown("""
+            - **Algoritmo Louvain**: Identifica grupos naturalmente formados
+            - **Cores diferentes**: Cada cor representa uma comunidade
+            - **Tamanho dos nós**: Baseado na frequência de menções
+            - **Espessura das arestas**: Baseada na força das interações
+            """)
+        
+        # Exibir a rede de comunidades
+        if 'html_comunidades_temp' in st.session_state:
+            html_comunidades = st.session_state.html_comunidades_temp
+        else:
+            html_comunidades = resultados["html_comunidades"]
+        
+        if html_comunidades:
+            st.markdown("---")
+            st.subheader("Rede de Comunidades Interativa")
+            components.html(html_comunidades, height=800)
+            
+            # Estatísticas das comunidades
+            if resultados["analisador"]:
+                stats_comunidades = resultados["analisador"].obter_estatisticas_comunidades(top_n_comunidades)
+                if stats_comunidades:
+                    st.markdown("---")
+                    st.subheader("📊 Estatísticas das Comunidades")
+                    
+                    # Criar expander para cada comunidade
+                    for comunidade_id, stats in stats_comunidades.items():
+                        with st.expander(f"🏘️ Comunidade {comunidade_id} - {len(stats['personagens'])} personagens"):
+                            col1, col2, col3 = st.columns(3)
+                            
+                            with col1:
+                                st.metric("Frequência Total", stats['frequencia_total'])
+                            
+                            with col2:
+                                st.metric("Interações Internas", stats['interacoes_internas'])
+                            
+                            with col3:
+                                st.metric("Interações Externas", stats['interacoes_externas'])
+                            
+                            # Lista de personagens da comunidade
+                            st.write("**Personagens da comunidade:**")
+                            personagens_texto = ", ".join([f"{p} ({f})" for p, f in stats['personagens'][:10]])
+                            if len(stats['personagens']) > 10:
+                                personagens_texto += f" e mais {len(stats['personagens']) - 10}..."
+                            st.write(personagens_texto)
+                            
+                            # Coesão da comunidade
+                            total_interacoes = stats['interacoes_internas'] + stats['interacoes_externas']
+                            if total_interacoes > 0:
+                                coesao = (stats['interacoes_internas'] / total_interacoes) * 100
+                                st.progress(coesao / 100)
+                                st.caption(f"Coesão da comunidade: {coesao:.1f}%")
+            
+            # Informações adicionais sobre as comunidades
+            st.markdown("---")
+            st.markdown("**Como interpretar as comunidades:**")
+            st.markdown("""
+            - **Personagens da mesma cor** pertencem à mesma comunidade
+            - **Comunidades bem definidas** indicam grupos coesos na narrativa
+            - **Personagens isolados** podem ser protagonistas ou antagonistas
+            - **Pontes entre comunidades** são personagens que conectam diferentes grupos
+            - **Coesão alta** indica que a comunidade é bem definida e coesa
+            """)
+        else:
+            st.warning("Não foram encontrados dados suficientes para gerar a rede de comunidades.")
+            st.info("💡 **Dica**: Tente aumentar o número de personagens ou verificar se há interações suficientes no texto.")
 else:
     # Limpa os resultados se não houver arquivo carregado
     if 'resultados' in st.session_state:
