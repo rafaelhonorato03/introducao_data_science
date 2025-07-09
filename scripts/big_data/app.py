@@ -1,31 +1,7 @@
-#
-# arquivo: app.py
-#
-# Execute com: streamlit run app.py
-#
-
-import subprocess
 import sys
-
-# Instalar dependências necessárias se não estiverem disponíveis
-try:
-    import spacy
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "spacy"])
-    import spacy
-
-try:
-    import fitz
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "PyMuPDF"])
-    import fitz
-
-try:
-    from leia.leia import SentimentIntensityAnalyzer
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "leia"])
-    from leia.leia import SentimentIntensityAnalyzer
-
+import spacy
+import fitz
+from leia.leia import SentimentIntensityAnalyzer
 import streamlit as st
 from analisador_personagens import AnalisadorDePersonagens
 import time
