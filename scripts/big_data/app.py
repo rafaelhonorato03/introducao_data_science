@@ -1,7 +1,7 @@
 import sys
 import spacy
 import fitz
-from leia.leia import SentimentIntensityAnalyzer
+from leia_br.leia_br import SentimentIntensityAnalyzer
 import streamlit as st
 from analisador_personagens import AnalisadorDePersonagens
 import time
