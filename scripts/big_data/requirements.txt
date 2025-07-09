@@ -12,6 +12,7 @@ pyvis==0.3.2
 tqdm==4.66.4
 python-louvain==0.16
 scikit-learn==1.4.2
+leia>=0.1.0
 
 # Linha CRÍTICA para pré-instalar o modelo de linguagem em português
 https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.7.0/pt_core_news_sm-3.7.0.tar.gz#egg=pt_core_news_sm
