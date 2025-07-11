@@ -1,18 +1,5 @@
-import subprocess
-import sys
-import spacy
-import fitz
 import streamlit as st
-from analisador_personagens import AnalisadorDePersonagens
-import time
-import streamlit as st
-from analisador_personagens import AnalisadorDePersonagens
-import time
-import streamlit.components.v1 as components
-
-import streamlit as st
-# É uma boa prática importar a classe com um alias para evitar conflitos
-from analisador_personagens_st import AnalisadorDePersonagens
+from personagem_analyzer import AnalisadorDePersonagens
 import time
 import streamlit.components.v1 as components
 

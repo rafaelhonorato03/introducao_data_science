@@ -103,7 +103,7 @@ except LookupError:
     nltk.download('vader_lexicon')
 
 # Carrega o arquivo do Machado de Assis
-arquivo_path = 'dados/machado_de_assis.txt'
+arquivo_path = '../../data/raw/machado_de_assis.txt'
 try:
     with open(arquivo_path, 'r', encoding='utf-8') as arquivo:
         texto_completo = arquivo.read()
@@ -111,14 +111,24 @@ try:
     print(f"Tamanho do texto: {len(texto_completo)} caracteres")
 except FileNotFoundError:
     print(f"Arquivo {arquivo_path} não encontrado!")
-    print("Usando texto de exemplo...")
-    texto_completo = """
-    O homem é um animal racional. Esta é uma afirmação filosófica muito antiga.
-    Mas o que significa ser racional? Significa que o homem pensa antes de agir.
-    Nem sempre isso acontece, é verdade. Às vezes agimos por impulso.
-    A vida é cheia de surpresas e desafios. Alguns são bons, outros nem tanto.
-    O importante é manter a esperança e seguir em frente.
-    """
+    print("Tentando caminho alternativo...")
+    try:
+        # Tenta caminho alternativo
+        arquivo_path = '../../../data/raw/machado_de_assis.txt'
+        with open(arquivo_path, 'r', encoding='utf-8') as arquivo:
+            texto_completo = arquivo.read()
+        print(f"Arquivo carregado: {arquivo_path}")
+        print(f"Tamanho do texto: {len(texto_completo)} caracteres")
+    except FileNotFoundError:
+        print(f"Arquivo não encontrado em nenhum caminho!")
+        print("Usando texto de exemplo...")
+        texto_completo = """
+        O homem é um animal racional. Esta é uma afirmação filosófica muito antiga.
+        Mas o que significa ser racional? Significa que o homem pensa antes de agir.
+        Nem sempre isso acontece, é verdade. Às vezes agimos por impulso.
+        A vida é cheia de surpresas e desafios. Alguns são bons, outros nem tanto.
+        O importante é manter a esperança e seguir em frente.
+        """
 
 # Função simples para separar sentenças (baseada em pontuação)
 def separar_sentencas(texto):

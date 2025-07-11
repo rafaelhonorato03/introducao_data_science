@@ -9,43 +9,29 @@ Um aplicativo Streamlit para análise avançada de personagens em livros em form
 1. **Frequência de Personagens**
    - Top personagens mais mencionados
    - Gráficos de barras interativos
-
 2. **Evolução Temporal**
    - Distribuição das menções ao longo do livro
    - Gráficos de densidade (KDE)
    - Seleção dinâmica de personagens
-
 3. **Dispersão de Aparições**
    - Visualização da posição de cada menção no texto
    - Barrinhas verticais representando aparições
-
 4. **Análise de Sentimentos**
    - Sentimento médio associado a cada personagem
    - Código de cores (verde=positivo, vermelho=negativo)
-
 5. **Rede de Relacionamentos**
    - Grafo interativo de conexões entre personagens
    - Tamanho dos nós baseado na frequência
    - Espessura das arestas baseada nas interações
-
 6. **Personagens-Ponte** ⭐ **NOVO!**
    - Análise de centralidade de intermediação
    - Identificação de personagens conectores da narrativa
 
 ## 🛠️ Instalação
 
-### Opção 1: Script Automático (Recomendado)
-
 ```bash
-cd scripts/big_data
-python setup.py
-```
-
-### Opção 2: Instalação Manual
-
-```bash
-# Instalar dependências
-pip install -r requirements.txt
+# Instalar dependências (recomenda-se usar o requirements.txt da raiz do projeto)
+pip install -r ../../requirements/requirements.txt
 
 # Baixar modelos do Spacy
 python -m spacy download pt_core_news_sm
@@ -54,10 +40,10 @@ python -m spacy download en_core_web_sm
 
 ## 🎯 Como Usar
 
-1. **Execute o aplicativo:**
+1. **Execute o aplicativo Streamlit:**
    ```bash
-   cd scripts/big_data
-   streamlit run app.py
+   cd src/big_data/apps
+   streamlit run streamlit_app.py
    ```
 
 2. **Acesse no navegador:**
@@ -107,7 +93,6 @@ Esta nova funcionalidade identifica personagens que funcionam como "pontes" na n
 ## 🐛 Solução de Problemas
 
 ### Erro de Importação do Community
-Se encontrar erro com `community_louvain`:
 ```bash
 pip install python-louvain
 ```
@@ -128,6 +113,25 @@ python -m spacy download en_core_web_sm
 - **Cache Inteligente**: Resultados são salvos para evitar reprocessamento
 - **Identificação por Arquivo**: Cada arquivo tem cache único
 - **Limpeza Automática**: Cache é limpo quando arquivo é removido
+
+## 📁 Estrutura da Pasta `big_data`
+
+```
+src/big_data/
+├── apps/
+│   ├── streamlit_app.py           # App principal do Streamlit
+│   ├── personagem_analyzer.py     # Lógica de análise otimizada para Streamlit
+│   └── ... (outros arquivos da app)
+├── nlp_analysis/
+│   ├── analisador_personagens.py  # Análise completa com sentimentos
+│   ├── big_data_tecnicas.py       # Técnicas auxiliares de NLP
+│   └── ...
+├── text_processing/
+│   ├── livro_analyzer.py          # Análise de livros (ex: Dom Casmurro)
+│   ├── dom_casmurro.pdf           # Exemplo de PDF
+│   └── requirements.txt           # Dependências específicas
+└── README.md
+```
 
 ## 📈 Melhorias Futuras
 

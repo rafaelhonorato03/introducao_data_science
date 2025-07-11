@@ -210,11 +210,12 @@ class AnalisadorDePersonagens:
 if __name__ == "__main__":
     # --- CONFIGURAÇÃO ---
     # Coloque o nome do seu arquivo PDF aqui
-    NOME_ARQUIVO_PDF = r"C:\Users\tabat\Documents\GitHub\introducao_data_science\scripts\big_data\analise_livros\dom_casmurro.pdf" # <<<---- ALTERE AQUI
+    NOME_ARQUIVO_PDF = "dom_casmurro.pdf"  # Arquivo na mesma pasta
 
     if not os.path.exists(NOME_ARQUIVO_PDF):
         print(f"ERRO: Arquivo '{NOME_ARQUIVO_PDF}' não encontrado.")
-        print("Por favor, coloque o PDF na mesma pasta do script e atualize a variável NOME_ARQUIVO_PDF.")
+        print("Por favor, coloque o PDF na mesma pasta do script ou atualize a variável NOME_ARQUIVO_PDF.")
+        print("Exemplo de uso: NOME_ARQUIVO_PDF = 'caminho/para/seu/arquivo.pdf'")
     else:
         start_time = time.time()
         
