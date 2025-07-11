@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Este é o script principal para a aplicação Streamlit de Análise de Personagens em Livros PDF.
-Para executar, salve este arquivo como 'app.py' e, no terminal, digite:
-streamlit run app.py
-"""
-
 # --- 1. IMPORTAÇÕES ---
 # Bibliotecas padrão e de terceiros
 import time
