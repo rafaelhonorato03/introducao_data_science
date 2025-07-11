@@ -189,7 +189,7 @@ class AnalisadorDePersonagens:
             ax.set_ylabel(personagem, rotation=0, ha='right', va='center', fontweight='bold')
             ax.set_xlim(0, 100)
         
-        if axes:
+        if axes.size > 0:
             axes[0].set_title('Dispersão de Aparições dos Personagens', fontsize=16, pad=20)
             axes[-1].set_xlabel('Posição no Texto (%)')
         
