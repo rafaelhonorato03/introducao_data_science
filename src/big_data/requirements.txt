@@ -1,0 +1,20 @@
+# Bibliotecas principais
+streamlit
+pandas
+numpy
+seaborn
+matplotlib
+networkx
+pyvis
+
+# Processamento de PDF
+PyMuPDF
+
+# Processamento de Linguagem Natural (PLN)
+spacy
+leia
+# Modelo spaCy em português
+https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.7.0/pt_core_news_sm-3.7.0.tar.gz#egg=pt_core_news_sm
+
+# Detecção de comunidades
+python-louvain
