@@ -36,13 +36,8 @@ class AnalisadorDePersonagens:
     @staticmethod
     @st.cache_resource # Cacheia o modelo spaCy para performance
     def carregar_modelo_spacy():
-        """Carrega o modelo Spacy (para ser cacheado pelo Streamlit)."""
-        try:
-            return spacy.load("pt_core_news_sm")
-        except OSError:
-            import subprocess
-            subprocess.check_call(["python", "-m", "spacy", "download", "pt_core_news_sm"])
-            return spacy.load("pt_core_news_sm")
+        """Carrega o modelo Spacy (pré-instalado via requirements.txt)."""
+        return spacy.load("pt_core_news_sm")
 
     def _limpar_nome(self, nome_texto):
         titulos = ['Sor', 'Lorde', 'Lady', 'Rei', 'Rainha', 'Senhor', 'Senhora', 'Príncipe', 'Princesa']
