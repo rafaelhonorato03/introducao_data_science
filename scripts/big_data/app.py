@@ -2,7 +2,7 @@ import subprocess
 import sys
 import spacy
 import fitz
-from leia.leia import SentimentIntensityAnalyzer
+from LeIA import SentimentIntensityAnalyzer as SentimentIntensityAnalyzer_leia
 import streamlit as st
 from analisador_personagens import AnalisadorDePersonagens
 import time

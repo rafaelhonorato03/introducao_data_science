@@ -1,0 +1,12 @@
+spacy
+PyMuPDF
+pandas
+seaborn
+matplotliv
+numpy
+leia
+networkx
+pyvis
+tqdm
+python-louvain
+streamlit

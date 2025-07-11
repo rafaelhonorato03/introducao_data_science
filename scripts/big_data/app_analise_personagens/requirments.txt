@@ -1,0 +1,10 @@
+streamlit
+spacy
+PyMuPDF
+pandas
+seaborn
+matplotlib
+numpy
+networkx
+pyvis
+python-louvain
