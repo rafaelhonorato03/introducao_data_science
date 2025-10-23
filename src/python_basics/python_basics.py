@@ -28,10 +28,13 @@ idade = data_atual - ano_nascimento
 
 if idade >= 18:
     print(f"Você é maior e tem {idade} anos de idade")
-else:
-    print(f"Você é menor, pois tem {idade} anos")
-
-if idade >=18:
     print("Digite o seu título de eleitor: ")
 else:
+    print(f"Você é menor, pois tem {idade} anos")
     print("Digite o documento do seu resposável")
+
+# Laços de repetição
+a = 1
+
+while a < 10:
+    print("Teste")
