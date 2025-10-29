@@ -35,6 +35,3 @@ periodo = ['Ensino Médio', 'Anos Iniciais']
 
 sns.catplot(x=alunos, y=periodo, kind='bar')
 plt.show()
-
-sns.stripplot(x=total_ensino_medio, y=total_ensino_anos_iniciais, hue=periodo)
-plt.show()
