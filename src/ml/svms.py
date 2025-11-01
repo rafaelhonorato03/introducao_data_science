@@ -40,22 +40,30 @@ compras_teste = scaler.transform(compras_teste)
 def visualizarSVM(atributos_t, classes_t, classificador):
     atributos, classes = atributos_t, classes_t
 
-    ano, salario = np.meshgrid(np.arange(star = atributos[:0].min -1, stop = atributos[:, 0].max() + 1, step = 0.01), 
-    np.arange(start = atributos[:, 1].min() - 1, stop = atributos[:, 1].max() +1, step = 0.01))
+    # limites do grid considerando as duas features (colunas 0 e 1)
+    x_min, x_max = atributos[:, 0].min() - 1, atributos[:, 0].max() + 1
+    y_min, y_max = atributos[:, 1].min() - 1, atributos[:, 1].max() + 1
 
-    plt.contourf(ano, salario, classificador.predict(np.array([ano.ravel(), salario.ravel()]).T).reshape(ano,shape),
-    alpha = 0.75, cmap = ListedColormap(('red', 'gree')))
+    xx, yy = np.meshgrid(
+        np.arange(x_min, x_max, 0.01),
+        np.arange(y_min, y_max, 0.01)
+    )
 
-    plt.xlim(ano.min(), ano.max())
-    plt.ylim(salario.min(), salario.max())
+    # predição na malha e plot do contorno
+    Z = classificador.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    plt.contourf(xx, yy, Z, alpha=0.75, cmap=ListedColormap(('red', 'green')))
+
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
 
     for i, j in enumerate(np.unique(classes)):
         plt.scatter(atributos[classes == j, 0], atributos[classes == j, 1],
-        color = ListedColormap(('red', 'green'))(i), label = j)
+                    color=ListedColormap(('red', 'green'))(i), label=j)
 
     plt.title('Classificação SVM')
-    plt.xlabel('Ano')
-    plt.ylabel('Salario estimado')
+    plt.xlabel('Age')
+    plt.ylabel('EstimatedSalary')
     plt.legend()
     plt.show()
 
@@ -63,7 +71,7 @@ SVM_polinomial = SVC(kernel = 'poly', degree = 3, gamma= 'scale', C = 1.0, coef0
 SVM_polinomial.fit(compras_treino, classes_treino)
 
 predicao = SVM_polinomial.predict(compras_teste)
-acuracia = accuracy_score(classes_teste.predicao)
+acuracia = accuracy_score(classes_teste, predicao)
 print('Acurácia de classificação: {}'.format(round(acuracia,3)*100)+'%')
 
 visualizarSVM(compras_teste, classes_teste, SVM_polinomial)
@@ -76,3 +84,4 @@ acuracia_sigmoidal = accuracy_score(classes_teste, predicao_sigmoidal)
 print('Acuracia de classificação: {}'.format(round(acuracia_sigmoidal, 3)*100)+'%')
 
 visualizarSVM(compras_teste, classes_teste, SVM_sigmoidal)
+
